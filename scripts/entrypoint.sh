@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Remove flag file during initialisation
+if [ -n $INITIALIZED_FILE_FLAG ] && [ -f $INITIALIZED_FILE_FLAG ]; then
+  echo "rm -f $INITIALIZED_FILE_FLAG..."
+  rm -f $INITIALIZED_FILE_FLAG
+fi
+
 # set name and email to use for commits made by this container
 git config --global user.email "$GIT_EMAIL"
 git config --global user.name "$GIT_USERNAME"
@@ -62,6 +68,13 @@ if [ -n "$REMOTE_NAME" ] && [ -n "$REMOTE_URL" ]; then
   echo "Reset to upstream state"
   git reset --hard $REMOTE_NAME/$REMOTE_BRANCH
   git clean -xdf
+fi
+
+# Add a file to mark volume as initialized
+if [ -n $INITIALIZED_FILE_FLAG ]; then
+  pwd
+  echo "touch $INITIALIZED_FILE_FLAG"
+  touch $INITIALIZED_FILE_FLAG
 fi
 
 # Launch inotify to watch $WATCH_FILE if configured

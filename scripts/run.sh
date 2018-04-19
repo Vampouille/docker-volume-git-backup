@@ -21,12 +21,22 @@ do
     # set up watches:
     inotifywait -e modify $WATCH_FILE
 
+    # Temporary remove flag file to avoid commit of this file
+    if [ -n $INITIALIZED_FILE_FLAG ] && [ -f $INITIALIZED_FILE_FLAG ]; then
+      rm -f $INITIALIZED_FILE_FLAG
+    fi
+
     # commit all files from current dir:
     git add --all .
 
     # commit with custom message:
     msg=`eval $GIT_COMMIT_MESSAGE`
     git commit -m "${msg:-"no commit message"}"
+
+    # Restore flag file
+    if [ -n $INITIALIZED_FILE_FLAG ]; then
+      touch $INITIALIZED_FILE_FLAG
+    fi
 
     if [ $REMOTE_NAME ] && [ $REMOTE_URL ]; then
         # push to repository in the background
