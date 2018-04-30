@@ -51,7 +51,18 @@ Optional environment:
  * `FORCE_CLONE`: Delete volume content before cloning remote repository
  * `INITIALIZED_FILE_FLAG`: If set, a file will be created after initialisation
    called INITIALIZED_FILE_FLAG. During initialisation, this file will be
-   deleted. This should be a relative path to volume root.
+   deleted. This should be a relative path to volume root. This file can be used
+   to avoid other containers from starting during initialisation of the volume.
+
+Example of script that wait for a `initialised` file to be created:
+```bash
+until ls /mnt/volume/initialised; do
+  echo waiting for volume initialisation;
+  sleep 1;
+done;
+```
+This kind of script can be launched before main entrypoint of other
+containers.
 
 To use SSH authentication to access remote repository, one of following
 variables must be set:
