@@ -77,6 +77,9 @@ if [ -n $INITIALIZED_FILE_FLAG ]; then
   touch $INITIALIZED_FILE_FLAG
 fi
 
+echo "sleeping !"
+sleep 120
+
 # Launch inotify to watch $WATCH_FILE if configured
 if [ -n "$WATCH_FILE" ]; then
   exec "$@"
