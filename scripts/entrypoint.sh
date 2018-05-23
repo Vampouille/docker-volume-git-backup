@@ -1,5 +1,7 @@
 #!/bin/bash
 
+umask 0002
+
 # Remove flag file during initialisation
 if [ -n $INITIALIZED_FILE_FLAG ] && [ -f $INITIALIZED_FILE_FLAG ]; then
   echo "rm -f $INITIALIZED_FILE_FLAG..."
